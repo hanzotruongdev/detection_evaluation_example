@@ -10,17 +10,13 @@ from model import MyModel
 from detection_metrics import ap_per_class, box_iou
 from dataset import COCO_NAMES
 
-
-device = 'cpu'
-
-model = MyModel(device=device)
-dataloader = get_dataloader()
-
-
 if __name__=='__main__':
-    """
+    device = 'cpu'
+
+    model = MyModel(device=device)
+    dataloader = get_dataloader()
+
     # run inference
-    """
     stats = []
     seen = 0
     iouv = torch.linspace(0.5, 0.95, 10).to(device)  # iou vector for mAP@0.5:0.95

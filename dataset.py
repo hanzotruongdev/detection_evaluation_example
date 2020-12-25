@@ -26,13 +26,24 @@ COCO_NAMES = [
 ]
 
 class MyOwnDataset(torch.utils.data.Dataset):
+    """Dataset wrapper for coco dataset
+    """
     def __init__(self, root, annotation, transforms=None):
+        """Init dataset
+
+        Args:
+            root (str): path to image folder in coco dataset
+            annotation (str): path annotation file
+            transforms (torch transform, optional): Defaults to None.
+        """
         self.root = root
         self.transforms = transforms
         self.coco = COCO(annotation)
         self.ids = list(sorted(self.coco.imgs.keys()))
 
     def __getitem__(self, index):
+        """get image and annotation
+        """
         # Own coco file
         coco = self.coco
         # Image ID
@@ -95,11 +106,10 @@ def collate_fn(batch):
     
 def get_default_transform():
     custom_transforms = []
-#     custom_transforms.append(torchvision.transforms.Resize((640, 640)))
+    # custom_transforms.append(torchvision.transforms.Resize((640, 640)))
     custom_transforms.append(torchvision.transforms.ToTensor())
     return torchvision.transforms.Compose(custom_transforms)
 
-    
 def get_dataloader(root='tiny_coco/images/val2017', \
                    anno="tiny_coco/annotations/instances_val2017.json", \
                    transforms=None, \

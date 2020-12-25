@@ -7,12 +7,26 @@ from dataset import COCO_NAMES
 
 class MyModel():
     def __init__(self, device='cpu'):
+        """Init model using torchvision models
+
+        Args:
+            device (str, optional): device to load. Defaults to 'cpu'.
+        """
         self.device = device
         self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
         self.model.to(self.device)
         self.transform = T.Compose([T.ToTensor()])
         
     def detect(self, img_path, threshold=0.8):
+        """Detect an image
+
+        Args:
+            img_path (str): path to image
+            threshold (float, optional): confidence threshold. Defaults to 0.8.
+
+        Returns:
+            boxes, class: detection result
+        """
         
         img = Image.open(img_path)
         img = self.transform(img)
@@ -31,6 +45,15 @@ class MyModel():
         return pred_boxes, pred_class
     
     def predict(self, images):
+        """predict a batch
+
+        Args:
+            images (tensor): batch images
+
+        Returns:
+            list[dict[tensor]]: prediction results 
+            refer to torchvision.models.detection -> faster r-cnn output
+        """
         
         self.model.eval()
         pred = self.model(images)
